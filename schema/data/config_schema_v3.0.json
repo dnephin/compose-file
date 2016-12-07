@@ -156,8 +156,10 @@
         "ports": {
           "type": "array",
           "items": {
-            "type": ["string", "number"],
-            "format": "ports"
+            "oneOf": [
+              {"type": ["string", "number"], "format": "ports"},
+              {"$ref": "#/definitions/port"}
+            ]
           },
           "uniqueItems": true
         },
@@ -267,6 +269,18 @@
       "properties": {
         "cpus": {"type": "string"},
         "memory": {"type": "string"}
+      },
+      "additionaProperties": false
+    },
+
+    "port": {
+      "id": "#/definitions/port",
+      "type": "object",
+      "properties": {
+        "target": {"type": "string"},
+        "published": {"type": "string"},
+        "protocol": {"type": "string"},
+        "mode": {"type": "string"}
       },
       "additionaProperties": false
     },

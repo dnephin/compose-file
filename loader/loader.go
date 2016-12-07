@@ -216,6 +216,8 @@ func transformHook(
 		return transformUlimits(source, target, data)
 	case reflect.TypeOf(types.UnitBytes(0)):
 		return loadSize(data)
+	case reflect.TypeOf(types.Port{}):
+		return transformPort(source, target, data)
 	}
 	switch target.Kind() {
 	case reflect.Struct:
@@ -487,6 +489,26 @@ func convertField(
 		return nil, nil
 	}
 	return data, nil
+}
+
+func transformPort(
+	source reflect.Type,
+	target reflect.Type,
+	data interface{},
+) (interface{}, error) {
+	switch value := data.(type) {
+	case string:
+		return value, nil
+	case int:
+		return fmt.Sprint(value), nil
+	case map[string]interface{}:
+		return data, nil
+	default:
+		return data, fmt.Errorf("invalid type %T for Port definition", value)
+	}
+}
+
+func convertPort() {
 }
 
 func transformExternal(

@@ -92,7 +92,7 @@ type ServiceConfig struct {
 	NetworkMode     string                           `mapstructure:"network_mode"`
 	Networks        map[string]*ServiceNetworkConfig `compose:"list_or_struct_map"`
 	Pid             string
-	Ports           []string `compose:"list_of_strings_or_numbers"`
+	Ports           []Port
 	Privileged      bool
 	ReadOnly        bool `mapstructure:"read_only"`
 	Restart         string
@@ -204,4 +204,11 @@ type VolumeConfig struct {
 type External struct {
 	Name     string
 	External bool
+}
+
+type Port struct {
+	Target    uint16
+	Published uint16
+	Protocol  string
+	Mode      string
 }
