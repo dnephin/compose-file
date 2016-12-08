@@ -127,6 +127,15 @@ func GetUnsupportedProperties(configDetails types.ConfigDetails) []string {
 				unsupported[property] = true
 			}
 		}
+
+		for networkName, networkRaw := range serviceDict["networks"] {
+			for _, property := range types.UnsupportedServiceNetworkProperties {
+				if _, isSet := network[property]; isSet {
+					key := fmt.Sprintf("networks.%s.%s", networkName, property)
+					unsupported[key] = true
+				}
+			}
+		}
 	}
 
 	return sortedKeys(unsupported)
@@ -474,7 +483,7 @@ func convertField(
 	case "list_or_dict_colon":
 		return loadMappingOrList(data, ":"), nil
 	case "list_or_struct_map":
-		return loadListOrStructMap(data, target)
+		return loadListOrStructMap(data)
 	case "string_or_list":
 		return loadStringOrListOfStrings(data), nil
 	case "list_of_strings_or_numbers":
@@ -514,7 +523,7 @@ func toYAMLName(name string) string {
 	return strings.Join(nameParts, "_")
 }
 
-func loadListOrStructMap(value interface{}, target reflect.Type) (interface{}, error) {
+func loadListOrStructMap(value interface{}) (interface{}, error) {
 	if list, ok := value.([]interface{}); ok {
 		mapValue := map[interface{}]interface{}{}
 		for _, name := range list {

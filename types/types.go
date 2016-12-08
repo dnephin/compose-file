@@ -27,6 +27,11 @@ var UnsupportedProperties = []string{
 	"tmpfs",
 }
 
+var UnsupportedServiceNetworkProperties = []string{
+	"ipv4_address",
+	"ipv6_address",
+}
+
 var DeprecatedProperties = map[string]string{
 	"container_name": "Setting the container name is not supported.",
 	"expose":         "Exposing ports is unnecessary - services on the same network can access each other's containers on any port.",
